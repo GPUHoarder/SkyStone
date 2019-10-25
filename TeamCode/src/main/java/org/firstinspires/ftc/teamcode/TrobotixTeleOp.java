@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -50,12 +51,14 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Linear OpMode2", group="Linear Opmode")
+@TeleOp(name="TeleOp - Use This for Saturday the 19th", group="Linear Opmode")
 
 public class TrobotixTeleOp extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    private Servo leftServo = null;
+    private Servo rightServo = null;
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor leftDrive2 = null;
@@ -63,6 +66,9 @@ public class TrobotixTeleOp extends LinearOpMode {
 
     private DcMotor leftSucc = null;
     private DcMotor rightSucc = null;
+
+    boolean servoCheck = false;
+    String servoStatus = "Unlatched";
 
     @Override
 
@@ -73,23 +79,27 @@ public class TrobotixTeleOp extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        leftDrive2  = hardwareMap.get(DcMotor.class, "left_drive2");
-        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
+        leftServo = hardwareMap.get(Servo.class, "left_servo");
+        rightServo = hardwareMap.get(Servo.class, "right_servo");
+        leftDrive  = hardwareMap.get(DcMotor.class, "left_front");
+        rightDrive = hardwareMap.get(DcMotor.class, "right_front");
+        rightDrive2 = hardwareMap.get(DcMotor.class, "right_back");
+        leftDrive2 = hardwareMap.get(DcMotor.class, "left_back");
 
         rightSucc  = hardwareMap.get(DcMotor.class, "rightSucc");
         leftSucc = hardwareMap.get(DcMotor.class, "leftSucc");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
         leftDrive2.setDirection(DcMotor.Direction.FORWARD);
         rightDrive2.setDirection(DcMotor.Direction.REVERSE);
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -115,32 +125,54 @@ public class TrobotixTeleOp extends LinearOpMode {
             rightPower = -gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
-            leftDrive2.setPower(leftPower * .4);
-            rightDrive2.setPower(rightPower * .4);
+            leftDrive.setPower(leftPower * 0.75);
+            rightDrive.setPower(rightPower * 0.75);
+            leftDrive2.setPower(leftPower * .375);
+            rightDrive2.setPower(rightPower * .375);
 
             // Map 'a' button to block-sucking motors
-            boolean button = gamepad1.a;
+            boolean buttonA = gamepad1.a;
             boolean buttonB = gamepad1.b;
-            if (button) {
-                leftSucc.setPower(-0.25);
-                rightSucc.setPower(0.25);
+            boolean buttonX = gamepad1.x;
+            boolean buttonY = gamepad1.y;
+            if(buttonX) {
+                leftServo.setPosition(0.2);
+                rightServo.setPosition(0.65);
+                servoCheck = true;
+            }
+
+            if (buttonY){
+                leftServo.setPosition(0);
+                rightServo.setPosition(1);
+                servoCheck = false;
+            }
+
+
+
+            if (buttonA) {
+                leftSucc.setPower(-0.5);
+                rightSucc.setPower(0.5);
             } else {
                 leftSucc.setPower(0);
                 rightSucc.setPower(0);
             }
             if (buttonB) {
-                leftSucc.setPower(0.25);
-                rightSucc.setPower(-0.25);
+                leftSucc.setPower(0.20);
+                rightSucc.setPower(-0.20);
             } else {
                 leftSucc.setPower(0);
                 rightSucc.setPower(0);
             }
-
+            if (servoCheck){
+                servoStatus = "Latched";
+            }
+            else {
+                servoStatus = "Unlatched";
+            }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Servos:", servoStatus);
             telemetry.update();
         }
     }
