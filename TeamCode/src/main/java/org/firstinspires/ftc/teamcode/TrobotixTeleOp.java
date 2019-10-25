@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -86,6 +86,11 @@ public class TrobotixTeleOp extends LinearOpMode {
         rightDrive2 = hardwareMap.get(DcMotor.class, "right_back");
         leftDrive2 = hardwareMap.get(DcMotor.class, "left_back");
 
+        double leftFront = 0;
+        double rightFront = 0;
+        double leftBack = 0;
+        double rightBack = 0;
+
         rightSucc  = hardwareMap.get(DcMotor.class, "rightSucc");
         leftSucc = hardwareMap.get(DcMotor.class, "leftSucc");
         // Most robots need the motor on one side to be reversed to drive forward
@@ -135,6 +140,22 @@ public class TrobotixTeleOp extends LinearOpMode {
             boolean buttonB = gamepad1.b;
             boolean buttonX = gamepad1.x;
             boolean buttonY = gamepad1.y;
+            boolean DPadDown = gamepad1.dpad_down;
+            if(DPadDown) {
+                leftDrive.setPower(1);
+                leftDrive2.setPower(1);
+                rightDrive.setPower(1);
+                rightDrive2.setPower(1);
+
+                sleep(3000);
+
+                leftDrive.setPower(0);
+                leftDrive2.setPower(0);
+                rightDrive.setPower(0);
+                rightDrive2.setPower(0);
+
+
+            }
             if(buttonX) {
                 leftServo.setPosition(0.2);
                 rightServo.setPosition(0.65);
@@ -170,6 +191,14 @@ public class TrobotixTeleOp extends LinearOpMode {
                 servoStatus = "Unlatched";
             }
             // Show the elapsed game time and wheel power.
+            leftFront = leftDrive.getCurrentPosition();
+            rightFront = rightDrive.getCurrentPosition();
+            leftBack = leftDrive2.getCurrentPosition();
+            rightBack = rightDrive2.getCurrentPosition();
+            telemetry.addData("Left Front:", (leftFront/3));
+            telemetry.addData("Right Front:", (rightFront/3));
+            telemetry.addData("Left Back:", (leftBack/3));
+            telemetry.addData("Right Back:", (rightBack/3));
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Servos:", servoStatus);
