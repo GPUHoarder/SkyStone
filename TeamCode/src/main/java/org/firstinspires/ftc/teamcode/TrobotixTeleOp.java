@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TeleOp - Use This for Saturday the 19th", group="Linear Opmode")
+@TeleOp(name="TeleOp", group="Linear Opmode")
 
 public class TrobotixTeleOp extends LinearOpMode {
 
@@ -79,20 +79,20 @@ public class TrobotixTeleOp extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftServo = hardwareMap.get(Servo.class, "left_servo");
-        rightServo = hardwareMap.get(Servo.class, "right_servo");
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_front");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_front");
-        rightDrive2 = hardwareMap.get(DcMotor.class, "right_back");
-        leftDrive2 = hardwareMap.get(DcMotor.class, "left_back");
+        leftServo = hardwareMap.get(Servo.class, "left servo");
+        rightServo = hardwareMap.get(Servo.class, "right servo");
+        leftDrive  = hardwareMap.get(DcMotor.class, "front left");
+        rightDrive = hardwareMap.get(DcMotor.class, "front right");
+        rightDrive2 = hardwareMap.get(DcMotor.class, "rear right");
+        leftDrive2 = hardwareMap.get(DcMotor.class, "rear left");
 
-        double leftFront = 0;
-        double rightFront = 0;
-        double leftBack = 0;
-        double rightBack = 0;
+        double leftFront;
+        double rightFront;
+        double leftBack;
+        double rightBack;
 
-        rightSucc  = hardwareMap.get(DcMotor.class, "rightSucc");
-        leftSucc = hardwareMap.get(DcMotor.class, "leftSucc");
+        rightSucc  = hardwareMap.get(DcMotor.class, "right intake");
+        leftSucc = hardwareMap.get(DcMotor.class, "left intake");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -126,8 +126,8 @@ public class TrobotixTeleOp extends LinearOpMode {
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            leftPower  = -gamepad1.left_stick_y ;
-            rightPower = -gamepad1.right_stick_y ;
+            leftPower  = -gamepad1.left_stick_y;
+            rightPower = -gamepad1.right_stick_y;
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower * 0.75);
@@ -140,22 +140,20 @@ public class TrobotixTeleOp extends LinearOpMode {
             boolean buttonB = gamepad1.b;
             boolean buttonX = gamepad1.x;
             boolean buttonY = gamepad1.y;
-            boolean DPadDown = gamepad1.dpad_down;
-            if(DPadDown) {
-                leftDrive.setPower(1);
-                leftDrive2.setPower(1);
+            boolean DPadLeft = gamepad1.dpad_left;
+            boolean DPadRight = gamepad1.dpad_right;
+            if(DPadLeft) {
+                leftDrive.setPower(-1);
                 rightDrive.setPower(1);
-                rightDrive2.setPower(1);
-
-                sleep(3000);
-
-                leftDrive.setPower(0);
-                leftDrive2.setPower(0);
-                rightDrive.setPower(0);
-                rightDrive2.setPower(0);
-
-
+                rightDrive2.setPower(-0.5);
+                leftDrive2.setPower(0.5);
+            } else if(DPadRight) {
+                leftDrive.setPower(1);
+                rightDrive.setPower(-1);
+                rightDrive2.setPower(0.5);
+                leftDrive2.setPower(-0.5);
             }
+
             if(buttonX) {
                 leftServo.setPosition(0.2);
                 rightServo.setPosition(0.65);
@@ -168,8 +166,6 @@ public class TrobotixTeleOp extends LinearOpMode {
                 servoCheck = false;
             }
 
-
-
             if (buttonA) {
                 leftSucc.setPower(-0.5);
                 rightSucc.setPower(0.5);
@@ -177,6 +173,7 @@ public class TrobotixTeleOp extends LinearOpMode {
                 leftSucc.setPower(0);
                 rightSucc.setPower(0);
             }
+
             if (buttonB) {
                 leftSucc.setPower(0.20);
                 rightSucc.setPower(-0.20);

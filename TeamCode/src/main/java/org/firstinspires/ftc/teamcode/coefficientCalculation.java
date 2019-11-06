@@ -97,10 +97,11 @@ public class coefficientCalculation extends LinearOpMode {
         leftDrive2  = hardwareMap.get(DcMotor.class, "left_back");
         rightDrive2 = hardwareMap.get(DcMotor.class, "right_back");
 
-        double leftFront;
-        double rightFront;
-        double leftBack;
-        double rightBack;
+        double leftFront = 0;
+        double rightFront = 0;
+        double leftBack = 0;
+        double rightBack = 0;
+
 
         leftServo = hardwareMap.get(Servo.class, "left_servo");
         rightServo = hardwareMap.get(Servo.class, "right_servo");
@@ -128,31 +129,31 @@ public class coefficientCalculation extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        leftDrive.setPower(1);
-        leftDrive2.setPower(1);
-        rightDrive.setPower(1);
-        rightDrive2.setPower(1);
+        while(opModeIsActive()) {
+            leftDrive.setPower(1);
+            leftDrive2.setPower(1);
+            rightDrive.setPower(1);
+            rightDrive2.setPower(1);
 
-        sleep(3000);
+            sleep(3000);
+            leftDrive.setPower(0);
+            leftDrive2.setPower(0);
+            rightDrive.setPower(0);
+            rightDrive2.setPower(0);
 
-        leftDrive.setPower(0);
-        leftDrive2.setPower(0);
-        rightDrive.setPower(0);
-        rightDrive2.setPower(0);
+            leftFront = (leftDrive.getCurrentPosition() - leftFront);
+            rightFront = (rightDrive.getCurrentPosition() - rightFront);
+            leftBack = (leftDrive2.getCurrentPosition() - leftBack);
+            rightBack = (rightDrive2.getCurrentPosition() - rightBack);
 
-        leftFront = leftDrive.getCurrentPosition();
-        rightFront = rightDrive.getCurrentPosition();
-        leftBack = leftDrive2.getCurrentPosition();
-        rightBack = rightDrive2.getCurrentPosition();
+            telemetry.addData("Left Front:", (leftFront / 3));
+            telemetry.addData("Right Front:", (rightFront / 3));
+            telemetry.addData("Left Back:", (leftBack / 3));
+            telemetry.addData("Right Back:", (rightBack / 3));
 
-        telemetry.addData("Left Front:", (leftFront/3));
-        telemetry.addData("Right Front:", (rightFront/3));
-        telemetry.addData("Left Back:", (leftBack/3));
-        telemetry.addData("Right Back:", (rightBack/3));
-
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-
+            telemetry.addData("Path", "Complete");
+            telemetry.update();
+        }
     }
 
     /*
