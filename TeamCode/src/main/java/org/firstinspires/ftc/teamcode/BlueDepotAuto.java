@@ -123,7 +123,7 @@ public class BlueDepotAuto extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         encoderDrive(DRIVE_SPEED, 12, 12, 5.0);
-
+        encoderDrive(DRIVE_SPEED, 15, 15, 5.0);
 
 
 

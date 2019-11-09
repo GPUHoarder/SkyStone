@@ -1,14 +1,14 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
 import com.qualcomm.robotcore.util.Range;
 
-public class Robot {
+public class Trobot {
     private DcMotor intakeRight = null;
     private DcMotor intakeLeft = null;
 
@@ -19,13 +19,13 @@ public class Robot {
 
     private Servo rightServo = null;
     private Servo leftServo = null;
-
     public DcMotor getIntakeRight() {
         return intakeRight;
     }
 
     public void setIntakeRight(DcMotor intakeRight) {
         this.intakeRight = intakeRight;
+
     }
 
     public DcMotor getIntakeLeft() {
