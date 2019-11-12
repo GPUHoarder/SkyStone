@@ -35,6 +35,11 @@ public class Configure {
         trobot.setRightDriveFront(hardwareMap.get(DcMotor.class, "front right"));
         trobot.setLeftDriveBack(hardwareMap.get(DcMotor.class, "rear left"));
         trobot.setRightDriveBack(hardwareMap.get(DcMotor.class, "rear right"));
+
+        trobot.getLeftDriveFront().setDirection(DcMotor.Direction.REVERSE);
+        trobot.getRightDriveFront().setDirection(DcMotor.Direction.FORWARD);
+        trobot.getLeftDriveBack().setDirection(DcMotor.Direction.REVERSE);
+        trobot.getRightDriveBack().setDirection(DcMotor.Direction.FORWARD);
     }
 
     public void InitializeServo() {
@@ -45,5 +50,9 @@ public class Configure {
     public void InitializeCollector() {
         trobot.setIntakeLeft(hardwareMap.get(DcMotor.class, "left intake"));
         trobot.setIntakeRight(hardwareMap.get(DcMotor.class, "right intake"));
+
+        trobot.getIntakeLeft().setDirection(DcMotor.Direction.FORWARD);
+        trobot.getIntakeRight().setDirection(DcMotor.Direction.REVERSE);
     }
+
 }

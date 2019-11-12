@@ -51,9 +51,9 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TeleOp", group="Linear Opmode")
+@TeleOp(name="Test TeleOp", group="Linear Opmode")
 
-public class TrobotixTeleOp extends LinearOpMode {
+public class TrobotixTestTeleOp extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -77,7 +77,8 @@ public class TrobotixTeleOp extends LinearOpMode {
         telemetry.update();
 
         Trobot trobot = new Trobot();
-        Configure configure = new Configure(trobot, hardwareMap);
+        Configure configure = new Configure(hardwareMap);
+        configure.Initialize();
         Drive drive = new Drive(trobot);
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
@@ -146,44 +147,29 @@ public class TrobotixTeleOp extends LinearOpMode {
             boolean DPadLeft = gamepad1.dpad_left;
             boolean DPadRight = gamepad1.dpad_right;
             if(DPadLeft) {
-                leftDrive.setPower(-1);
-                rightDrive.setPower(1);
-                rightDrive2.setPower(-0.5);
-                leftDrive2.setPower(0.5);
+                drive.StrafeLeft();
             } else if(DPadRight) {
-                leftDrive.setPower(1);
-                rightDrive.setPower(-1);
-                rightDrive2.setPower(0.5);
-                leftDrive2.setPower(-0.5);
+                drive.StrafeRight();
             }
 
             if(buttonX) {
-                leftServo.setPosition(0.2);
-                rightServo.setPosition(0.65);
+                drive.Latch();
                 servoCheck = true;
             }
 
             if (buttonY){
-                leftServo.setPosition(0);
-                rightServo.setPosition(1);
+                drive.Unlatch();
                 servoCheck = false;
             }
 
             if (buttonA) {
-                leftSucc.setPower(-0.5);
-                rightSucc.setPower(0.5);
+                drive.Collector(true, false);
+            } else if (buttonB){
+                drive.Collector(false, false);
             } else {
-                leftSucc.setPower(0);
-                rightSucc.setPower(0);
+                drive.Collector(false, true);
             }
 
-            if (buttonB) {
-                leftSucc.setPower(0.20);
-                rightSucc.setPower(-0.20);
-            } else {
-                leftSucc.setPower(0);
-                rightSucc.setPower(0);
-            }
             if (servoCheck){
                 servoStatus = "Latched";
             }

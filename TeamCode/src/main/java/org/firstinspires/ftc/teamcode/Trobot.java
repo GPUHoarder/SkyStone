@@ -25,7 +25,6 @@ public class Trobot {
 
     public void setIntakeRight(DcMotor intakeRight) {
         this.intakeRight = intakeRight;
-
     }
 
     public DcMotor getIntakeLeft() {
