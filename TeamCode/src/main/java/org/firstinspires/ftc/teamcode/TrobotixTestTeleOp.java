@@ -57,15 +57,7 @@ public class TrobotixTestTeleOp extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private Servo leftServo = null;
-    private Servo rightServo = null;
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
-    private DcMotor leftDrive2 = null;
-    private DcMotor rightDrive2 = null;
 
-    private DcMotor leftSucc = null;
-    private DcMotor rightSucc = null;
 
     boolean servoCheck = false;
     String servoStatus = "Unlatched";
@@ -76,33 +68,15 @@ public class TrobotixTestTeleOp extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        Trobot trobot = new Trobot();
         Configure configure = new Configure(hardwareMap);
-        configure.Initialize();
+        configure.initialize();
+        Trobot trobot = configure.getTrobot();
         Drive drive = new Drive(trobot);
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftServo = hardwareMap.get(Servo.class, "left servo");
-        rightServo = hardwareMap.get(Servo.class, "right servo");
-        leftDrive  = hardwareMap.get(DcMotor.class, "front left");
-        rightDrive = hardwareMap.get(DcMotor.class, "front right");
-        rightDrive2 = hardwareMap.get(DcMotor.class, "rear right");
-        leftDrive2 = hardwareMap.get(DcMotor.class, "rear left");
 
-        double leftFront;
-        double rightFront;
-        double leftBack;
-        double rightBack;
 
-        rightSucc  = hardwareMap.get(DcMotor.class, "right intake");
-        leftSucc = hardwareMap.get(DcMotor.class, "left intake");
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftDrive2.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive2.setDirection(DcMotor.Direction.REVERSE);
 
 
         // Wait for the game to start (driver presses PLAY)
@@ -113,31 +87,10 @@ public class TrobotixTestTeleOp extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            // Setup a variable for each drive wheel to save power level for telemetry
-            double leftPower;
-            double rightPower;
 
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
 
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
-            //double drive = -gamepad1.left_stick_y;
-            //double turn  =  gamepad1.right_stick_x;
+            drive.driving(-gamepad1.left_stick_y, -gamepad1.right_stick_y); // Send calculated power to wheels
 
-            // leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            // rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            leftPower  = -gamepad1.left_stick_y;
-            rightPower = -gamepad1.right_stick_y;
-
-            // Send calculated power to wheels
-            leftDrive.setPower(leftPower * 0.75);
-            rightDrive.setPower(rightPower * 0.75);
-            leftDrive2.setPower(leftPower * .375);
-            rightDrive2.setPower(rightPower * .375);
 
             // Map 'a' button to block-sucking motors
             boolean buttonA = gamepad1.a;
@@ -147,27 +100,29 @@ public class TrobotixTestTeleOp extends LinearOpMode {
             boolean DPadLeft = gamepad1.dpad_left;
             boolean DPadRight = gamepad1.dpad_right;
             if(DPadLeft) {
-                drive.StrafeLeft();
+                drive.strafeLeft();
             } else if(DPadRight) {
-                drive.StrafeRight();
+                drive.strafeRight();
             }
 
             if(buttonX) {
-                drive.Latch();
+                drive.latch();
                 servoCheck = true;
             }
 
             if (buttonY){
-                drive.Unlatch();
+                drive.unlatch();
                 servoCheck = false;
             }
 
             if (buttonA) {
-                drive.Collector(true, false);
-            } else if (buttonB){
-                drive.Collector(false, false);
-            } else {
-                drive.Collector(false, true);
+                drive.collector(true, false);
+            }
+            else if (buttonB){
+                drive.collector(false, false);
+            }
+            else {
+                drive.collector(false, true);
             }
 
             if (servoCheck){
@@ -177,16 +132,16 @@ public class TrobotixTestTeleOp extends LinearOpMode {
                 servoStatus = "Unlatched";
             }
             // Show the elapsed game time and wheel power.
-            leftFront = leftDrive.getCurrentPosition();
-            rightFront = rightDrive.getCurrentPosition();
-            leftBack = leftDrive2.getCurrentPosition();
-            rightBack = rightDrive2.getCurrentPosition();
-            telemetry.addData("Left Front:", (leftFront/3));
-            telemetry.addData("Right Front:", (rightFront/3));
-            telemetry.addData("Left Back:", (leftBack/3));
-            telemetry.addData("Right Back:", (rightBack/3));
+            //leftFront = leftDrive.getCurrentPosition();
+            //rightFront = rightDrive.getCurrentPosition();
+            //leftBack = leftDrive2.getCurrentPosition();
+            //rightBack = rightDrive2.getCurrentPosition();
+            //telemetry.addData("Left Front:", (leftFront/3));
+            //telemetry.addData("Right Front:", (rightFront/3));
+            //telemetry.addData("Left Back:", (leftBack/3));
+            //telemetry.addData("Right Back:", (rightBack/3));
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Servos:", servoStatus);
             telemetry.update();
         }

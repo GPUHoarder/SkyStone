@@ -4,7 +4,7 @@ import org.firstinspires.ftc.teamcode.Trobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
+import java.lang.Math;
 
 public class Drive {
     private Trobot trobot = null;
@@ -17,70 +17,80 @@ public class Drive {
         return time;
     }
 
-    int time = 0;
+    private int time = 0;
 
-    public void DriveForward(double speed, double distance) {
-        trobot.getLeftDriveFront().setPower(0.5);
-        trobot.getRightDriveFront().setPower(0.5);
-        trobot.getLeftDriveBack().setPower(0.5);
-        trobot.getRightDriveBack().setPower(0.5);
+    public void driving(double leftPower, double rightPower) {
+        trobot.getLeftDriveFront().setPower(leftPower);
+        trobot.getRightDriveFront().setPower(rightPower);
+        trobot.getLeftDriveBack().setPower(leftPower);
+        trobot.getRightDriveBack().setPower(rightPower);
+    }
 
-        time = (int)((distance/(72.5*speed))*1000);
+    public void move(double speed, double distance) {
+        if (speed > 1) {
+            speed = 1;
+        }
+        if (distance > 0) {
+            trobot.getLeftDriveFront().setPower(speed);
+            trobot.getRightDriveFront().setPower(speed);
+            trobot.getLeftDriveBack().setPower(speed);
+            trobot.getRightDriveBack().setPower(speed);
+        } else if (distance < 0) {
+            trobot.getLeftDriveFront().setPower(-speed);
+            trobot.getRightDriveFront().setPower(-speed);
+            trobot.getLeftDriveBack().setPower(-speed);
+            trobot.getRightDriveBack().setPower(-speed);
+        }
+
+
+        time = Math.abs((int)((distance/(72.5*speed))*1000));
 
     }
 
-    public void DriveBackward(double speed) {
-        trobot.getLeftDriveFront().setPower(-speed);
-        trobot.getRightDriveFront().setPower(-speed);
-        trobot.getLeftDriveBack().setPower(-speed);
-        trobot.getRightDriveBack().setPower(-speed);
 
+    public void turnRight(double degrees) {
 
     }
 
-    public void TurnRight(double degrees) {
+    public void turnLeft(double degrees) {
 
     }
 
-    public void TurnLeft(double degrees) {
-
+    public void strafeRight() {
+        trobot.getLeftDriveFront().setPower(-1);
+        trobot.getRightDriveFront().setPower(1);
+        trobot.getLeftDriveBack().setPower(1);
+        trobot.getRightDriveBack().setPower(-1);
     }
 
-    public void StrafeRight() {
-        trobot.getLeftDriveFront().setPower(-0.5);
-        trobot.getRightDriveFront().setPower(0.5);
-        trobot.getLeftDriveBack().setPower(0.5);
-        trobot.getRightDriveBack().setPower(-0.5);
+    public void strafeLeft() {
+        trobot.getLeftDriveFront().setPower(1);
+        trobot.getRightDriveFront().setPower(-1);
+        trobot.getLeftDriveBack().setPower(-1);
+        trobot.getRightDriveBack().setPower(1);
     }
 
-    public void StrafeLeft() {
-        trobot.getLeftDriveFront().setPower(0.5);
-        trobot.getRightDriveFront().setPower(-0.5);
-        trobot.getLeftDriveBack().setPower(-0.5);
-        trobot.getRightDriveBack().setPower(0.5);
-    }
-
-    public void Stop() {
+    public void stop() {
         trobot.getLeftDriveFront().setPower(0);
         trobot.getRightDriveFront().setPower(0);
         trobot.getLeftDriveBack().setPower(0);
         trobot.getRightDriveBack().setPower(0);
     }
 
-    public void Latch() {
+    public void latch() {
         trobot.getLeftServo().setPosition(0.5);
         trobot.getRightServo().setPosition(0.3);
     }
 
-    public void Unlatch() {
+    public void unlatch() {
         trobot.getLeftServo().setPosition(1);
         trobot.getRightServo().setPosition(0);
     }
 
-    public void Collector(boolean in, boolean stop) {
+    public void collector(boolean in, boolean stop) {
         if(in) {
-            trobot.getIntakeLeft().setPower(0.5);
-            trobot.getIntakeRight().setPower(0.5);
+            trobot.getIntakeLeft().setPower(-0.5);
+            trobot.getIntakeRight().setPower(-0.5);
         }
         else if(!in && !stop) {
             trobot.getIntakeLeft().setPower(0.2);
