@@ -19,6 +19,19 @@ public class Trobot {
 
     private Servo rightServo = null;
     private Servo leftServo = null;
+
+    private Servo hookServo = null;
+
+    public Servo getHookServo() {
+        return hookServo;
+    }
+
+    public void setHookServo(Servo hookServo) {
+        this.hookServo = hookServo;
+    }
+
+
+
     public DcMotor getIntakeRight() {
         return intakeRight;
     }

@@ -26,6 +26,49 @@ public class Drive {
         trobot.getRightDriveBack().setPower(rightPower);
     }
 
+    public void straightDrive(int direction) {
+        trobot.getLeftDriveFront().setPower(0.5*direction);
+        trobot.getRightDriveFront().setPower(0.5*direction);
+        trobot.getLeftDriveBack().setPower(0.5*direction);
+        trobot.getRightDriveBack().setPower(0.5*direction);
+    }
+
+    public void encoderDrive(double speed, double distance) {
+
+        double threadsPerCentimeter = ((1120*2)/(10*3.1415));
+
+        trobot.getLeftDriveFront().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        trobot.getRightDriveFront().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        trobot.getLeftDriveBack().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        trobot.getRightDriveBack().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        trobot.getLeftDriveFront().setTargetPosition((int)(distance * threadsPerCentimeter));
+        trobot.getRightDriveFront().setTargetPosition((int)(distance * threadsPerCentimeter));
+        trobot.getLeftDriveBack().setTargetPosition((int)(distance * threadsPerCentimeter));
+        trobot.getRightDriveBack().setTargetPosition((int)(distance * threadsPerCentimeter));
+
+        trobot.getLeftDriveFront().setPower(speed);
+        trobot.getRightDriveFront().setPower(speed);
+        trobot.getLeftDriveBack().setPower(speed);
+        trobot.getRightDriveBack().setPower(speed);
+
+        while (trobot.getLeftDriveFront().isBusy() && trobot.getRightDriveBack().isBusy()) {
+        }
+
+        trobot.getLeftDriveFront().setPower(0);
+        trobot.getRightDriveFront().setPower(0);
+        trobot.getLeftDriveBack().setPower(0);
+        trobot.getRightDriveBack().setPower(0);
+    }
+
+    public void skyClaw(boolean down) {
+        if(down) {
+            trobot.getHookServo().setPosition(0.5);
+        } else {
+            trobot.getHookServo().setPosition(0);
+        }
+    }
+
     public void move(double speed, double distance) {
         if (speed > 1) {
             speed = 1;
@@ -77,17 +120,17 @@ public class Drive {
         trobot.getRightDriveBack().setPower(0);
     }
 
-    public void latch() {
-        trobot.getLeftServo().setPosition(0.5);
-        trobot.getRightServo().setPosition(0.3);
-    }
+   // public void latch() {
+     //   trobot.getLeftServo().setPosition(0.5);
+       // trobot.getRightServo().setPosition(0.3);
+    //}
 
-    public void unlatch() {
+    /*public void unlatch() {
         trobot.getLeftServo().setPosition(1);
         trobot.getRightServo().setPosition(0);
-    }
+    }*/
 
-    public void collector(boolean in, boolean stop) {
+    /*public void collector(boolean in, boolean stop) {
         if(in) {
             trobot.getIntakeLeft().setPower(-0.5);
             trobot.getIntakeRight().setPower(-0.5);
@@ -99,5 +142,5 @@ public class Drive {
             trobot.getIntakeLeft().setPower(0);
             trobot.getIntakeRight().setPower(0);
         }
-    }
+    }*/
 }

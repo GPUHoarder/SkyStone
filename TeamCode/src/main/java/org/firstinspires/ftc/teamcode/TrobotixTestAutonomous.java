@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Test Autonomous", group="LinearOpMode")
+@TeleOp(name="Test Autonomous", group="Autonomous")
 
 public class TrobotixTestAutonomous extends LinearOpMode {
     public void runOpMode() {
@@ -15,11 +16,9 @@ public class TrobotixTestAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        distanceDrive(1, 10); //Drive forward 10 cm at 30% power
-        sleep(500);
-        drive.latch();
-        sleep(500);
-        distanceDrive(1, -10); //Drive backwards 10 cm at 30% power
+        distanceDrive(1, 30); //Drive forward 10 cm at 30% power
+
+        distanceDrive(1, -30); //Drive backwards 10 cm at 30% power
 
 
 

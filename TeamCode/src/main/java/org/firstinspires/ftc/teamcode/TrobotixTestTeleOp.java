@@ -89,59 +89,39 @@ public class TrobotixTestTeleOp extends LinearOpMode {
 
 
 
-            drive.driving(-gamepad1.left_stick_y, -gamepad1.right_stick_y); // Send calculated power to wheels
+            drive.driving(gamepad1.left_stick_y, gamepad1.right_stick_y); // Send calculated power to wheels
 
 
-            // Map 'a' button to block-sucking motors
+
             boolean buttonA = gamepad1.a;
             boolean buttonB = gamepad1.b;
             boolean buttonX = gamepad1.x;
             boolean buttonY = gamepad1.y;
             boolean DPadLeft = gamepad1.dpad_left;
             boolean DPadRight = gamepad1.dpad_right;
+            boolean RB = gamepad1.right_bumper;
+            boolean LB = gamepad1.left_bumper;
+            boolean DPadUp = gamepad1.dpad_up;
+            boolean DPadDown = gamepad1.dpad_down;
+
             if(DPadLeft) {
                 drive.strafeLeft();
             } else if(DPadRight) {
                 drive.strafeRight();
+            } else if(DPadUp) {
+                drive.straightDrive(1);
+            } else if(DPadDown) {
+                drive.straightDrive(-1);
             }
 
-            if(buttonX) {
-                drive.latch();
-                servoCheck = true;
+            if(RB) {
+                drive.skyClaw(true);
+            } else if(LB) {
+                drive.skyClaw(false);
             }
 
-            if (buttonY){
-                drive.unlatch();
-                servoCheck = false;
-            }
 
-            if (buttonA) {
-                drive.collector(true, false);
-            }
-            else if (buttonB){
-                drive.collector(false, false);
-            }
-            else {
-                drive.collector(false, true);
-            }
-
-            if (servoCheck){
-                servoStatus = "Latched";
-            }
-            else {
-                servoStatus = "Unlatched";
-            }
-            // Show the elapsed game time and wheel power.
-            //leftFront = leftDrive.getCurrentPosition();
-            //rightFront = rightDrive.getCurrentPosition();
-            //leftBack = leftDrive2.getCurrentPosition();
-            //rightBack = rightDrive2.getCurrentPosition();
-            //telemetry.addData("Left Front:", (leftFront/3));
-            //telemetry.addData("Right Front:", (rightFront/3));
-            //telemetry.addData("Left Back:", (leftBack/3));
-            //telemetry.addData("Right Back:", (rightBack/3));
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Servos:", servoStatus);
             telemetry.update();
         }

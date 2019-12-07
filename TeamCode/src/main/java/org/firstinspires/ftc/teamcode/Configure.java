@@ -27,7 +27,7 @@ public class Configure {
     public void initialize() {
         initializeDrive();
         initializeServo();
-        initializeCollector();
+        //initializeCollector();
     }
 
     public void initializeDrive() {
@@ -37,22 +37,21 @@ public class Configure {
         trobot.setRightDriveBack(hardwareMap.get(DcMotor.class, "rear right"));
 
         trobot.getLeftDriveFront().setDirection(DcMotor.Direction.FORWARD);
-        trobot.getRightDriveFront().setDirection(DcMotor.Direction.REVERSE);
+        trobot.getRightDriveFront().setDirection(DcMotor.Direction.FORWARD);
         trobot.getLeftDriveBack().setDirection(DcMotor.Direction.REVERSE);
-        trobot.getRightDriveBack().setDirection(DcMotor.Direction.FORWARD);
+        trobot.getRightDriveBack().setDirection(DcMotor.Direction.REVERSE);
     }
 
     public void initializeServo() {
-        trobot.setLeftServo(hardwareMap.get(Servo.class, "left servo"));
-        trobot.setRightServo(hardwareMap.get(Servo.class, "right servo"));
+        trobot.setHookServo(hardwareMap.get(Servo.class, "hook servo"));
     }
 
-    public void initializeCollector() {
-        trobot.setIntakeLeft(hardwareMap.get(DcMotor.class, "left intake"));
-        trobot.setIntakeRight(hardwareMap.get(DcMotor.class, "right intake"));
+    //public void initializeCollector() {
+      //  trobot.setIntakeLeft(hardwareMap.get(DcMotor.class, "left intake"));
+        //trobot.setIntakeRight(hardwareMap.get(DcMotor.class, "right intake"));
 
-        trobot.getIntakeLeft().setDirection(DcMotor.Direction.FORWARD);
-        trobot.getIntakeRight().setDirection(DcMotor.Direction.REVERSE);
-    }
+        //trobot.getIntakeLeft().setDirection(DcMotor.Direction.FORWARD);
+        //trobot.getIntakeRight().setDirection(DcMotor.Direction.REVERSE);
+    //}
 
 }
