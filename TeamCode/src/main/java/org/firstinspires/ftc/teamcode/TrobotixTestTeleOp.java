@@ -105,9 +105,9 @@ public class TrobotixTestTeleOp extends LinearOpMode {
             boolean DPadDown = gamepad1.dpad_down;
 
             if(DPadLeft) {
-                drive.strafeLeft();
+                drive.strafe(0.75, 1); //1 is left, -1 is right for direction
             } else if(DPadRight) {
-                drive.strafeRight();
+                drive.strafe(0.75, -1);
             } else if(DPadUp) {
                 drive.straightDrive(1);
             } else if(DPadDown) {

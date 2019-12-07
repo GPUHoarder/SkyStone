@@ -99,19 +99,14 @@ public class Drive {
 
     }
 
-    public void strafeRight() {
-        trobot.getLeftDriveFront().setPower(-1);
-        trobot.getRightDriveFront().setPower(1);
-        trobot.getLeftDriveBack().setPower(1);
-        trobot.getRightDriveBack().setPower(-1);
+    public void strafe(double power, int direction) {
+        trobot.getLeftDriveFront().setPower(-power*direction);
+        trobot.getRightDriveFront().setPower(power*direction);
+        trobot.getLeftDriveBack().setPower(power*direction);
+        trobot.getRightDriveBack().setPower(-power*direction);
     }
 
-    public void strafeLeft() {
-        trobot.getLeftDriveFront().setPower(1);
-        trobot.getRightDriveFront().setPower(-1);
-        trobot.getLeftDriveBack().setPower(-1);
-        trobot.getRightDriveBack().setPower(1);
-    }
+
 
     public void stop() {
         trobot.getLeftDriveFront().setPower(0);
